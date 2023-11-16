@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="process1" name="process1" isExecutable="true">
+    <startEvent id="startevent3" name="Start"></startEvent>
+    <serviceTask id="servicetask12" name="Setup Ethereum" activiti:class="mie.ether_example.SetupServiceTask"></serviceTask>
+    <sequenceFlow id="flow22" sourceRef="startevent3" targetRef="servicetask12"></sequenceFlow>
+    <serviceTask id="servicetask13" name="Initialize and Deploy Real Estate Registry" activiti:class="mie.ether_example.DeployAndInitializeRealEstateRegistry"></serviceTask>
+    <sequenceFlow id="flow23" sourceRef="servicetask12" targetRef="servicetask13"></sequenceFlow>
+    <userTask id="transactionForm" name="Enter Real Estate Transaction Information">
+      <extensionElements>
+        <activiti:formProperty id="buyerName" name="buyerName"></activiti:formProperty>
+        <activiti:formProperty id="sellerName" name="sellerName"></activiti:formProperty>
+        <activiti:formProperty id="propertyAddress" name="propertyAddress"></activiti:formProperty>
+        <activiti:formProperty id="soldPrice" name="soldPrice"></activiti:formProperty>
+        <activiti:formProperty id="fundsInEscrow" name="fundsInEscrow"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow24" sourceRef="servicetask13" targetRef="transactionForm"></sequenceFlow>
+    <serviceTask id="servicetask14" name="Check Client List" activiti:class="mie.ether_example.CheckClientList"></serviceTask>
+    <sequenceFlow id="flow26" sourceRef="servicetask14" targetRef="inclusivegateway3"></sequenceFlow>
+    <inclusiveGateway id="inclusivegateway3" name="Exclusive Gateway"></inclusiveGateway>
+    <serviceTask id="servicetask15" name="Confirm Funds in Escrow" activiti:class="mie.ether_example.ConfirmFundsInEscrow"></serviceTask>
+    <sequenceFlow id="flow27" sourceRef="inclusivegateway3" targetRef="servicetask15">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sellerIsClient == true}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask16" name="Confirm Property Ownership" activiti:class="mie.ether_example.ConfirmPropertyOwnership"></serviceTask>
+    <sequenceFlow id="flow28" sourceRef="inclusivegateway3" targetRef="servicetask16">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${buyerIsClient == true}
+]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="servicetask15" targetRef="inclusivegateway4"></sequenceFlow>
+    <inclusiveGateway id="inclusivegateway4" name="Exclusive Gateway"></inclusiveGateway>
+    <sequenceFlow id="flow30" sourceRef="servicetask16" targetRef="inclusivegateway4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow31" sourceRef="inclusivegateway4" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask17" name="Transfer Ownership and Release Funds" activiti:class="mie.ether_example.TransferOwnershipAndReleaseFunds"></serviceTask>
+    <sequenceFlow id="flow32" sourceRef="exclusivegateway1" targetRef="servicetask17"></sequenceFlow>
+    <serviceTask id="servicetask18" name="Cancel Transaction" activiti:class="mie.ether_example.CancelTransaction"></serviceTask>
+    <sequenceFlow id="flow33" sourceRef="exclusivegateway1" targetRef="servicetask18"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow34" sourceRef="servicetask17" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="servicetask18" targetRef="exclusivegateway2"></sequenceFlow>
+    <serviceTask id="servicetask19" name="Shutdown Ethereum" activiti:class="mie.ether_example.ShutdownTask"></serviceTask>
+    <sequenceFlow id="flow36" sourceRef="exclusivegateway2" targetRef="servicetask19"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow37" sourceRef="servicetask19" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="inclusivegateway3" targetRef="servicetask18"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="transactionForm" targetRef="servicetask14"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process1">
+    <bpmndi:BPMNPlane bpmnElement="process1" id="BPMNPlane_process1">
+      <bpmndi:BPMNShape bpmnElement="startevent3" id="BPMNShape_startevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
+        <omgdc:Bounds height="71.0" width="118.0" x="354.0" y="212.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="transactionForm" id="BPMNShape_transactionForm">
+        <omgdc:Bounds height="81.0" width="131.0" x="101.0" y="432.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
+        <omgdc:Bounds height="55.0" width="105.0" x="523.0" y="443.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="inclusivegateway3" id="BPMNShape_inclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="451.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask15" id="BPMNShape_servicetask15">
+        <omgdc:Bounds height="75.0" width="105.0" x="760.0" y="358.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask16" id="BPMNShape_servicetask16">
+        <omgdc:Bounds height="68.0" width="105.0" x="760.0" y="502.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="inclusivegateway4" id="BPMNShape_inclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="910.0" y="451.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="995.0" y="452.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask17" id="BPMNShape_servicetask17">
+        <omgdc:Bounds height="63.0" width="128.0" x="952.0" y="216.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask18" id="BPMNShape_servicetask18">
+        <omgdc:Bounds height="55.0" width="105.0" x="1150.0" y="443.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="1182.0" y="227.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask19" id="BPMNShape_servicetask19">
+        <omgdc:Bounds height="55.0" width="105.0" x="1267.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1417.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="165.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="315.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="354.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="413.0" y="283.0"></omgdi:waypoint>
+        <omgdi:waypoint x="412.0" y="369.0"></omgdi:waypoint>
+        <omgdi:waypoint x="166.0" y="369.0"></omgdi:waypoint>
+        <omgdi:waypoint x="166.0" y="432.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="628.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="673.0" y="471.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="693.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="693.0" y="397.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="395.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="693.0" y="491.0"></omgdi:waypoint>
+        <omgdi:waypoint x="693.0" y="537.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="536.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="865.0" y="395.0"></omgdi:waypoint>
+        <omgdi:waypoint x="929.0" y="397.0"></omgdi:waypoint>
+        <omgdi:waypoint x="930.0" y="451.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="865.0" y="536.0"></omgdi:waypoint>
+        <omgdi:waypoint x="930.0" y="537.0"></omgdi:waypoint>
+        <omgdi:waypoint x="930.0" y="491.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="950.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="995.0" y="472.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="1015.0" y="452.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1016.0" y="279.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="1035.0" y="472.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1150.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="1080.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1182.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="1202.0" y="443.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1202.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="1222.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1267.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="1372.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1417.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="693.0" y="491.0"></omgdi:waypoint>
+        <omgdi:waypoint x="693.0" y="616.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1202.0" y="616.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1202.0" y="498.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="232.0" y="472.0"></omgdi:waypoint>
+        <omgdi:waypoint x="523.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

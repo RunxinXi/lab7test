@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS Registered;
+
+CREATE TABLE IF NOT EXISTS Registered (
+account int,
+address TEXT,
+item TEXT,
+time TEXT);

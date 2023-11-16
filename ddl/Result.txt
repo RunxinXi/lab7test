@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS Result;
+
+CREATE TABLE IF NOT EXISTS Result (
+    id INT,
+    owner TEXT
+);

@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS Query;
+
+CREATE TABLE IF NOT EXISTS Query (
+    id INT,
+    account INT,
+    item TEXT
+);
+INSERT INTO Query (id, account, item) VALUES (1, 5, '999-1234');
+INSERT INTO Query (id, account, item) VALUES (2, 7, '999-3456');
